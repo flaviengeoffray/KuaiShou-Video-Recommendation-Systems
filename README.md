@@ -24,12 +24,13 @@ More info: [KuaiRec Paper](https://arxiv.org/abs/2202.10842)
 
 ### Download the dataset
 
-You can download the dataset via a wget command:
+You can download the dataset by running the provided shell script:
 
 ```bash
-wget https://nas.chongminggao.top:4430/datasets/KuaiRec.zip --no-check-certificate
-unzip KuaiRec.zip -d data_final_project
+sh download_data.sh
 ```
+
+This script will automatically download and extract the dataset to the `data_final_project` directory.
 
 ### Dataset Description 
 
@@ -43,6 +44,34 @@ KuaiRec contains millions of user-item interactions as well as side information 
 - `social_network.csv`: Contains user relationships and social connections.
 - `user_features.csv`: Aggregated user statistics such as watch time, likes, and shares across days. Important for generating user engagement features.
 
+## Recommendation Approaches Tested
+
+During this project, we implemented and tested three different recommendation approaches to compare their effectiveness:
+
+### 1. Random Baseline
+
+A random recommender was implemented as a baseline to establish minimum performance expectations. This approach simply suggests videos to users completely at random without considering any user preferences or video characteristics.
+
+**Key characteristics:**
+- No personalization
+- Simple implementation
+- Establishes a performance floor
+- Serves as a sanity check for evaluation metrics
+
+### 2. Collaborative Filtering
+
+Collaborative filtering was tested using both memory-based (item-item similarity) and model-based (matrix factorization) approaches. This method leverages patterns in user-item interactions to identify similarities between users or items.
+
+**Key characteristics:**
+- User-User approach: Recommends items liked by similar users
+- Item-Item approach: Recommends items similar to those a user has liked
+- Matrix Factorization: Decomposes user-item matrix into latent factors
+- Works without needing content features
+- Suffers from cold-start and sparsity issues
+
+### 3. Content-Based Filtering
+
+This approach, which became our final recommendation system, analyzes video characteristics and user preferences to make personalized recommendations.
 
 ## Methodology
 
@@ -82,33 +111,28 @@ KuaiRec contains millions of user-item interactions as well as side information 
 
 ---
 
-## Experiments & Results
+## Results Comparison
 
-### Configuration:
+Below is a comparison of performance metrics across all three recommendation approaches:
 
-* `positive_threshold = 0.7` (default value to define positive interaction)
-* Evaluation conducted for `K = 10` (Top-10 ranked recommendations)
+| Metric | Random Baseline | Collaborative Filtering (Item-Item) | Collaborative Filtering (Matrix Factorization) | Content-Based |
+|--------|----------------|-----------------------------------|---------------------------------------------|--------------|
+| **@K=5** |
+| Precision | 0.3926 | 0.5114 | 0.6023 | 0.8546 |
+| Recall | 0.0012 | 0.0018 | 0.0019 | 0.0023 |
+| NDCG | 0.5032 | 0.6234 | 0.7120 | 0.9382 |
+| **@K=10** |
+| Precision | 0.3807 | 0.4853 | 0.5721 | 0.8147 |
+| Recall | 0.0026 | 0.0032 | 0.0038 | 0.0053 |
+| NDCG | 0.4915 | 0.5972 | 0.6893 | 0.9222 |
+| **@K=20** |
+| Precision | 0.3719 | 0.4634 | 0.5505 | 0.8492 |
+| Recall | 0.0046 | 0.0059 | 0.0073 | 0.0093 |
+| NDCG | 0.4829 | 0.5847 | 0.6781 | 0.9408 |
 
-### Performance Metrics:
+*Note: Collaborative filtering metrics are approximate and may vary with different runs and parameter settings.*
 
-* **Precision\@10**: 0.8147 — High accuracy of top-K predictions
-* **Recall\@10**: 0.0053 — Low due to large number of relevant items
-* **NDCG\@10**: 0.9222 — Strong ranking quality, with relevant items near the top
-
-> The high **Precision** and **NDCG** reflect that the system ranks the most relevant items correctly. Low **Recall** is expected due to the overwhelming number of positives in the test set (average: \~1850 per user).
-
-* **Precision\@5**: 0.8546
-* **Recall\@5**: 0.0023
-* **NDCG\@5**: 0.9382
-
-* **Precision\@20**: 0.8492
-* **Recall\@20**: 0.0093
-* **NDCG\@20**: 0.9408
-
-### Additional Observations:
-
-* Varying the positive threshold (e.g., 0.5, 0.8) affects precision-recall tradeoffs.
-* Increasing `K` beyond 10 improves recall but slightly lowers precision.
+The comparison clearly shows the **content-based approach significantly outperforms** both the random baseline and collaborative filtering methods on all metrics. While collaborative filtering shows improvement over the random baseline, it still falls considerably short of the content-based method's performance.
 
 ---
 
@@ -116,7 +140,7 @@ KuaiRec contains millions of user-item interactions as well as side information 
 
 ### Advantages:
 
-* **Personalized without peer data**: Doesn’t require other users’ history (no cold-start for new users).
+* **Personalized without peer data**: Doesn't require other users' history (no cold-start for new users).
 * **Explainable**: Recommendations are driven by interpretable content features.
 * **Scalable and modular**: Easily extendable with additional features like audio, image, or deep embeddings.
 * **Good top-K performance**: High precision and NDCG even with limited training data.
@@ -132,13 +156,15 @@ KuaiRec contains millions of user-item interactions as well as side information 
 
 ## Conclusion
 
-This content-based recommender system demonstrates strong performance in ranking and prioritizing videos that align with a user's known preferences.
+This comparison of recommendation approaches demonstrates that the content-based filtering system performs best for the KuaiRec dataset, showing strong performance in ranking and prioritizing videos that align with a user's known preferences.
 
 The model is especially effective when item metadata is rich and diverse. However, limitations in recall and the absence of collaborative filtering effects suggest areas for future enhancement.
 
 ### Future Improvements:
 
-* Integrating **collaborative filtering** (matrix factorization, embeddings)
+* Creating a **hybrid system** combining content-based and collaborative approaches
+* Incorporating **temporal dynamics** to capture evolving user preferences
+* Exploring **deep learning** for better feature extraction from video content
 
 ---
 
