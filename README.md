@@ -4,12 +4,6 @@ The project objective was to develop a recommender system that suggests short vi
 
 ---
 
-# Content-Based Video Recommendation System
-
-This project implements a comprehensive **content-based filtering recommender system** tailored for short video platforms. It leverages user interaction history along with rich, heterogeneous metadata about videos to construct personalized user profiles and generate relevant video recommendations. The system's primary goal is to learn each user's content preferences and use them to rank new videos based on similarity.
-
----
-
 ## Dataset Overview
 
 **KuaiRec dataset** is a large-scale, fully-observed dataset collected from the Kuaishou short-video platform.
