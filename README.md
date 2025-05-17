@@ -97,6 +97,14 @@ KuaiRec contains millions of user-item interactions as well as side information 
 
 > The high **Precision** and **NDCG** reflect that the system ranks the most relevant items correctly. Low **Recall** is expected due to the overwhelming number of positives in the test set (average: \~1850 per user).
 
+* **Precision\@5**: 0.8546
+* **Recall\@5**: 0.0023
+* **NDCG\@5**: 0.9382
+
+* **Precision\@20**: 0.8492
+* **Recall\@20**: 0.0093
+* **NDCG\@20**: 0.9408
+
 ### Additional Observations:
 
 * Varying the positive threshold (e.g., 0.5, 0.8) affects precision-recall tradeoffs.
