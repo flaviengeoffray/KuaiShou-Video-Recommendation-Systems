@@ -171,4 +171,5 @@ The model is especially effective when item metadata is rich and diverse. Howeve
 ## Author
 
 **[Flavien Geoffray]**
+**[Lucas Duport]**
 
